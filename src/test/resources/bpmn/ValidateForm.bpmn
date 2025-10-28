@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0udaupe" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.21.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="ValidateForm" name="Form Validation" isExecutable="true" camunda:versionTag="1">
+    <bpmn:extensionElements />
+    <bpmn:startEvent id="ProcessStart">
+      <bpmn:outgoing>Flow_1xb1su9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="InputFormMessageWaitEvent" name="Ожидание сообщения на создание формы">
+      <bpmn:incoming>Flow_1xb1su9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1n1y94h</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1vun9tg" messageRef="Message_3d71fij" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1xb1su9" sourceRef="ProcessStart" targetRef="InputFormMessageWaitEvent" />
+    <bpmn:subProcess id="Activity_1fxrqp1" name="Заполнение и валидация формы">
+      <bpmn:incoming>Flow_06sriq8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gtxfh3</bpmn:outgoing>
+      <bpmn:serviceTask id="ServiceTask_ValidateForm" name="Валидация формы" camunda:asyncBefore="true" camunda:delegateExpression="${validateFormDelegate}">
+        <bpmn:extensionElements />
+        <bpmn:incoming>Flow_0d45fy6</bpmn:incoming>
+        <bpmn:outgoing>Flow_0rx2l31</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:userTask id="UserTask_InputValue" name="Заполнение формы" camunda:assignee="demo">
+        <bpmn:documentation>Wait for user to enter a value</bpmn:documentation>
+        <bpmn:extensionElements>
+          <camunda:formData>
+            <camunda:formField id="orderTotal" label="Сумма заказа" type="string">
+              <camunda:properties />
+              <camunda:validation />
+            </camunda:formField>
+          </camunda:formData>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1h6orq1</bpmn:incoming>
+        <bpmn:outgoing>Flow_0d45fy6</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:exclusiveGateway id="Gateway_IsFormValid" name="Форма валидна?" default="Flow_11vj3v3">
+        <bpmn:incoming>Flow_0rx2l31</bpmn:incoming>
+        <bpmn:outgoing>Flow_0awfh5p</bpmn:outgoing>
+        <bpmn:outgoing>Flow_11vj3v3</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:endEvent id="MainSubprocessEnd_FormIsValid">
+        <bpmn:incoming>Flow_0awfh5p</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0d45fy6" sourceRef="UserTask_InputValue" targetRef="ServiceTask_ValidateForm" />
+      <bpmn:sequenceFlow id="Flow_0rx2l31" sourceRef="ServiceTask_ValidateForm" targetRef="Gateway_IsFormValid" />
+      <bpmn:sequenceFlow id="Flow_0awfh5p" name="Да" sourceRef="Gateway_IsFormValid" targetRef="MainSubprocessEnd_FormIsValid">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isFormValid == true}
+                </bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="Flow_11vj3v3" name="Нет" sourceRef="Gateway_IsFormValid" targetRef="MainSubpEscalation_FormIsInvalid" />
+      <bpmn:startEvent id="MainSubprocessStart">
+        <bpmn:outgoing>Flow_1h6orq1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="MainSubpEscalation_FormIsInvalid">
+        <bpmn:incoming>Flow_11vj3v3</bpmn:incoming>
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_0b71qh5" escalationRef="Escalation_2j4pjap" />
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1h6orq1" sourceRef="MainSubprocessStart" targetRef="UserTask_InputValue" />
+      <bpmn:textAnnotation id="TextAnnotation_0d9u1ap">
+        <bpmn:text>Здесь есть async-before, чтобы запускать Camunda-джобы в тестах в явном виде</bpmn:text>
+      </bpmn:textAnnotation>
+      <bpmn:association id="Association_16nnmi1" sourceRef="ServiceTask_ValidateForm" targetRef="TextAnnotation_0d9u1ap" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1n1y94h" sourceRef="InputFormMessageWaitEvent" targetRef="Gateway_1wgkdda" />
+    <bpmn:endEvent id="ProcessEnd">
+      <bpmn:incoming>Flow_1gtxfh3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1gtxfh3" sourceRef="Activity_1fxrqp1" targetRef="ProcessEnd" />
+    <bpmn:exclusiveGateway id="Gateway_1wgkdda">
+      <bpmn:incoming>Flow_1n1y94h</bpmn:incoming>
+      <bpmn:incoming>Flow_0oxhuad</bpmn:incoming>
+      <bpmn:outgoing>Flow_06sriq8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_06sriq8" sourceRef="Gateway_1wgkdda" targetRef="Activity_1fxrqp1" />
+    <bpmn:boundaryEvent id="MainSubprocessEscalation_FormIsInvalid" name="Стартовать процесс заново" attachedToRef="Activity_1fxrqp1">
+      <bpmn:outgoing>Flow_0oxhuad</bpmn:outgoing>
+      <bpmn:escalationEventDefinition id="EscalationEventDefinition_0zzzgme" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0oxhuad" sourceRef="MainSubprocessEscalation_FormIsInvalid" targetRef="Gateway_1wgkdda" />
+  </bpmn:process>
+  <bpmn:error id="Error_0zdz7lr" name="Error_1ckmv6r" errorCode="20000" camunda:errorMessage="Form is invalid" />
+  <bpmn:message id="Message_3d71fij" name="InputFormMessage" />
+  <bpmn:escalation id="Escalation_2j4pjap" name="Escalation_FormIsInvalid" escalationCode="FORM_INVALID" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ValidateForm">
+      <bpmndi:BPMNShape id="Event_0i85h8a_di" bpmnElement="ProcessStart">
+        <dc:Bounds x="172" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_12s8h4u_di" bpmnElement="InputFormMessageWaitEvent">
+        <dc:Bounds x="269" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="245" y="235" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fxrqp1_di" bpmnElement="Activity_1fxrqp1" isExpanded="true">
+        <dc:Bounds x="480" y="80" width="680" height="270" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nwspgv_di" bpmnElement="ServiceTask_ValidateForm" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <dc:Bounds x="787" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bz9saw_di" bpmnElement="UserTask_InputValue" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <dc:Bounds x="610" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1jvddib_di" bpmnElement="Gateway_IsFormValid" isMarkerVisible="true">
+        <dc:Bounds x="964" y="185" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="945" y="173" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0bhcp6i_di" bpmnElement="MainSubprocessEnd_FormIsValid">
+        <dc:Bounds x="1092" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="884" y="232" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1c7mjiq_di" bpmnElement="MainSubprocessStart">
+        <dc:Bounds x="502" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_119u3nm_di" bpmnElement="MainSubpEscalation_FormIsInvalid" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="1092" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0d9u1ap_di" bpmnElement="TextAnnotation_0d9u1ap">
+        <dc:Bounds x="760" y="270" width="200" height="55" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0d45fy6_di" bpmnElement="Flow_0d45fy6">
+        <di:waypoint x="710" y="210" />
+        <di:waypoint x="787" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rx2l31_di" bpmnElement="Flow_0rx2l31">
+        <di:waypoint x="887" y="210" />
+        <di:waypoint x="964" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0awfh5p_di" bpmnElement="Flow_0awfh5p">
+        <di:waypoint x="1014" y="210" />
+        <di:waypoint x="1092" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1030" y="193" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11vj3v3_di" bpmnElement="Flow_11vj3v3">
+        <di:waypoint x="989" y="235" />
+        <di:waypoint x="989" y="280" />
+        <di:waypoint x="1092" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1027" y="263" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h6orq1_di" bpmnElement="Flow_1h6orq1">
+        <di:waypoint x="538" y="210" />
+        <di:waypoint x="610" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_16nnmi1_di" bpmnElement="Association_16nnmi1">
+        <di:waypoint x="856" y="250" />
+        <di:waypoint x="866" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1gzkgqe_di" bpmnElement="ProcessEnd">
+        <dc:Bounds x="1222" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1wgkdda_di" bpmnElement="Gateway_1wgkdda" isMarkerVisible="true">
+        <dc:Bounds x="365" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1tzdij9_di" bpmnElement="MainSubprocessEscalation_FormIsInvalid" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="502" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="420" y="376" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xb1su9_di" bpmnElement="Flow_1xb1su9">
+        <di:waypoint x="208" y="210" />
+        <di:waypoint x="269" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n1y94h_di" bpmnElement="Flow_1n1y94h">
+        <di:waypoint x="305" y="210" />
+        <di:waypoint x="365" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gtxfh3_di" bpmnElement="Flow_1gtxfh3">
+        <di:waypoint x="1160" y="210" />
+        <di:waypoint x="1222" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06sriq8_di" bpmnElement="Flow_06sriq8">
+        <di:waypoint x="415" y="210" />
+        <di:waypoint x="480" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oxhuad_di" bpmnElement="Flow_0oxhuad">
+        <di:waypoint x="520" y="368" />
+        <di:waypoint x="520" y="390" />
+        <di:waypoint x="390" y="390" />
+        <di:waypoint x="390" y="235" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
