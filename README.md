@@ -22,10 +22,10 @@ Pick the most recent version from
 </dependencyManagement>
 
 <dependencies>
-<dependency>
-    <groupId>guru.nicks.commons</groupId>
-    <artifactId>camunda-test-starter</artifactId>
-</dependency>
+    <dependency>
+        <groupId>guru.nicks.commons</groupId>
+        <artifactId>camunda-test-starter</artifactId>
+    </dependency>
 </dependencies>
 ```
 
