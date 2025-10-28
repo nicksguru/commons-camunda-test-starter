@@ -33,6 +33,9 @@ Pick the most recent version from
 
 To browse the API documentation, click [here](https://nicks.guru/commons/commons-camunda-test-starter/apidocs).
 
+This software adheres to the BDD (Behavior-Driven Development) approach. See module usage examples in Cucumber
+test [scenarios](src/test/resources/cucumber/) and [steps](src/test/java/guru/nicks/cucumber/).
+
 ## Disclaimer
 
 THIS CODE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
