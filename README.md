@@ -1,6 +1,6 @@
 # [Nicks.Guru](https://nicks.guru) Commons Camunda Test Starter
 
-<img alt="Latest version" src="https://img.shields.io/maven-central/v/guru.nicks.commons/camunda-test-starter?filter=!25.*&label=Latest%20version:&cacheSeconds=7200"/> <img alt="Release date" src="https://img.shields.io/maven-central/last-update/guru.nicks.commons/camunda-test-starter?label=&color=orange&cacheSeconds=7200"/>
+![Latest version](https://img.shields.io/maven-central/v/guru.nicks.commons/camunda-test-starter?filter=!25.*&label=Latest%20version:&cacheSeconds=7200) ![Release date](https://img.shields.io/maven-central/last-update/guru.nicks.commons/camunda-test-starter?label=&color=orange&cacheSeconds=7200)
 
 Starter for running Camunda tests.
 
