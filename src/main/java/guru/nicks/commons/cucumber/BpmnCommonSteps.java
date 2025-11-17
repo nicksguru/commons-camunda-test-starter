@@ -1,6 +1,6 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.cucumber.world.BpmnCommonWorld;
+import guru.nicks.commons.cucumber.world.BpmnCommonWorld;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -159,7 +159,7 @@ public class BpmnCommonSteps {
                 //.processInstanceId(bpmnWorld.getProcess().getId())
                 .processInstanceBusinessKey(bpmnCommonWorld.getProcessBusinessKey())
                 .list();
-        Task lastTask = userTasks.get(userTasks.size() - 1);
+        Task lastTask = userTasks.getLast();
 
         BpmnAwareTests.taskService()
                 .complete(lastTask.getId(), variables);

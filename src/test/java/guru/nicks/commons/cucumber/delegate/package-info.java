@@ -1,4 +1,4 @@
 @NonNullApi
-package guru.nicks.cucumber.delegate;
+package guru.nicks.commons.cucumber.delegate;
 
 import org.springframework.lang.NonNullApi;

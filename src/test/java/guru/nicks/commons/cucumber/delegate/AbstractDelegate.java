@@ -1,4 +1,4 @@
-package guru.nicks.cucumber.delegate;
+package guru.nicks.commons.cucumber.delegate;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;

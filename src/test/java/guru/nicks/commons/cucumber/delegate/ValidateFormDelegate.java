@@ -1,4 +1,4 @@
-package guru.nicks.cucumber.delegate;
+package guru.nicks.commons.cucumber.delegate;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static guru.nicks.validation.dsl.ValiDsl.check;
+import static guru.nicks.commons.validation.dsl.ValiDsl.check;
 
 @Component
 public class ValidateFormDelegate extends AbstractDelegate {

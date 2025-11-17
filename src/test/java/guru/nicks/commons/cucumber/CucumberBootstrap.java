@@ -1,8 +1,8 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.cucumber.delegate.ValidateFormDelegate;
-import guru.nicks.cucumber.world.BpmnCommonWorld;
-import guru.nicks.test.PostgreSqlContainerRunner;
+import guru.nicks.commons.cucumber.delegate.ValidateFormDelegate;
+import guru.nicks.commons.cucumber.world.BpmnCommonWorld;
+import guru.nicks.commons.test.PostgreSqlContainerRunner;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;

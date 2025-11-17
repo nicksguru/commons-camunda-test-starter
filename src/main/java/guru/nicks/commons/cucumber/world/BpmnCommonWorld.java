@@ -1,4 +1,4 @@
-package guru.nicks.cucumber.world;
+package guru.nicks.commons.cucumber.world;
 
 import io.cucumber.spring.ScenarioScope;
 import lombok.Data;

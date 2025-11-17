@@ -1,6 +1,6 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.cucumber.delegate.ValidateFormDelegate;
+import guru.nicks.commons.cucumber.delegate.ValidateFormDelegate;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.ru.То;
