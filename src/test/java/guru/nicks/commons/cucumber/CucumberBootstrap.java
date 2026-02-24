@@ -9,6 +9,7 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.TestDatabaseAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -29,8 +30,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ContextConfiguration(classes = {
         // scenario-scoped states
         BpmnCommonWorld.class,
-        // Camunda engine and delegate beans
-        CamundaBpmAutoConfiguration.class, ValidateFormDelegate.class
+        // delegate beans
+        ValidateFormDelegate.class
 }, initializers = PostgreSqlContainerRunner.class)
 @TestPropertySource(properties = {
         //"logging.level.root=DEBUG",
@@ -42,6 +43,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "camunda.bpm.job-execution.enabled.false=",
         "camunda.bpm.generic-properties.properties.historyTimeToLive=P1D"
 })
+@Import({CamundaBpmAutoConfiguration.class})
 @DataJpaTest(excludeAutoConfiguration = TestDatabaseAutoConfiguration.class)
 @EnableJpaRepositories(basePackages = "${app.rootPackage}")
 @EnableTransactionManagement
