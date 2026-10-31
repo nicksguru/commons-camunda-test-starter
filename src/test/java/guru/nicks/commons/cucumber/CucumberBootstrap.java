@@ -7,8 +7,8 @@ import guru.nicks.commons.test.PostgreSqlContainerRunner;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.jdbc.TestDatabaseAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.TestDatabaseAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         //"logging.level.root=DEBUG",
 
         // needed for component scanners, such as Spring Data
-        "app.rootPackage=guru.nicks",
+        "app.rootPackage=guru.nicks.commons",
 
         // disable async jobs, otherwise Camunda tests will stop at the first async boundary
         "camunda.bpm.job-execution.enabled.false=",

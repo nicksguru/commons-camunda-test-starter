@@ -5,14 +5,14 @@
     <parent>
         <groupId>guru.nicks.commons</groupId>
         <artifactId>parent</artifactId>
-        <version>100.261014.0</version><!-- BUNDLE_VERSION -->
+        <version>400.261031.0</version><!-- BUNDLE_VERSION -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <!-- groupId is redundant (inherited from parent), but required by Maven Central -->
     <groupId>guru.nicks.commons</groupId>
     <artifactId>camunda-test-starter</artifactId>
-    <version>100.261014.0</version><!-- BUNDLE_VERSION -->
+    <version>400.261031.0</version><!-- BUNDLE_VERSION -->
 
     <name>Nicks.Guru Commons Camunda Test Starter</name>
     <description>Starter for running Camunda tests</description>
@@ -44,6 +44,13 @@
     </issueManagement>
 
     <dependencies>
+        <!-- @NullMarked -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>jpa-starter</artifactId>
@@ -73,6 +80,18 @@
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-bpm-assert</artifactId>
+        </dependency>
+
+        <!-- @DataJpaTest and TestDatabaseAutoConfiguration (moved out of spring-boot-test-autoconfigure in Boot 4) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-data-jpa-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-jdbc-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- @Builder, @Slf4j, etc. -->
